@@ -1,0 +1,124 @@
+table DimDate
+	lineageTag: 93c8b274-3e81-41f1-83a8-8bb98b88284c
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: e4001339-c643-47eb-ab36-3b9dd7970a82
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"DimDate","TableItemName":"Date (bins)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column Year
+		formatString: 0
+		lineageTag: 714c18a0-46c0-4812-ac1c-14238c2196e1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		formatString: 0
+		lineageTag: 061239c7-148d-4694-837d-f504f2ccf7a9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: 5af0989e-511f-436f-8a03-0ea33ad17f68
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: 3f691bad-336e-495a-8b18-146ad972ce37
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		formatString: 0
+		lineageTag: d5a7d22e-32e6-41fb-bb8c-f358a9595a2f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weekday
+		lineageTag: b02f6d5a-6caa-45a3-9f99-2139fbf247ad
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Weekday]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date (bins)' =
+			IF(
+				ISBLANK('DimDate'[Date]),
+				BLANK(),
+				DATE(YEAR('DimDate'[Date]), 1, 1)
+			)
+		formatString: yyyy
+		lineageTag: fed08a5a-3f21-4746-9999-4ca5481a5d9b
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "DimDate"
+				          }
+				        },
+				        "Property": "Date"
+				      }
+				    }
+				  ],
+				  "binningMetadata": {
+				    "binSize": {
+				      "value": 1.0,
+				      "unit": 4
+				    }
+				  }
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"d","Entity":"DimDate"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"d"}},"Property":"Date"}}],"BinItem":{"Expression":{"Floor":{"Expression":{"Column":{"Expression":{"SourceRef":{"Source":"d"}},"Property":"Date"}},"Size":1.0,"TimeUnit":3}}}}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	partition DimDate = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS(
+				    CALENDAR(
+				        MIN(FactOrders[OrderDate]),
+				        MAX(FactOrders[OrderDate])
+				    ),
+				    "Year", YEAR([Date]),
+				    "Month Number", MONTH([Date]),
+				    "Month", FORMAT([Date],"MMM"),
+				    "Quarter", "Q" & FORMAT([Date],"Q"),
+				    "Day", DAY([Date]),
+				    "Weekday", FORMAT([Date],"dddd"))
+
+	annotation PBI_Id = e91a704368534399a33c895ec788cdd5
+

@@ -1,0 +1,100 @@
+table DimCustomer
+	lineageTag: 9f513610-361b-49da-b7ca-4ca0a7dc1ec9
+
+	column CustomerID
+		dataType: int64
+		formatString: 0
+		lineageTag: d93975ca-aa75-46e1-9074-5afbb1c0e0c7
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerCountry
+		dataType: string
+		lineageTag: 895b58c0-83c7-478f-a640-02b8105ab3e0
+		dataCategory: County
+		summarizeBy: none
+		sourceColumn: CustomerCountry
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerFirstName
+		dataType: string
+		lineageTag: 101ec860-5d9e-4cad-afad-509bbfc29836
+		summarizeBy: none
+		sourceColumn: CustomerFirstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerLastName
+		dataType: string
+		lineageTag: 40d56f99-1caa-4463-8755-d5a956500470
+		summarizeBy: none
+		sourceColumn: CustomerLastName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerSegment
+		dataType: string
+		lineageTag: af435184-900f-4840-8a64-3eed1ed62f3a
+		summarizeBy: none
+		sourceColumn: CustomerSegment
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerState
+		dataType: string
+		lineageTag: 6367c8bb-006b-4e83-b87c-5064d2930e72
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: CustomerState
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_ZipCode
+		dataType: string
+		lineageTag: b05dbe9c-468d-4044-9722-5712ce823aa9
+		summarizeBy: none
+		sourceColumn: Customer_ZipCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerFullName
+		dataType: string
+		lineageTag: 9a8fc3d0-94fc-445e-87ef-613b8b04c230
+		summarizeBy: none
+		sourceColumn: CustomerFullName
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segment Tier' =
+			
+			SWITCH(
+			    TRUE(),
+			    [Customer Rank] <= 10, "VIP Customers",
+			    [Customer Rank] <= 50, "High Value",
+			    [Customer Rank] <= 150, "Medium Value",
+			    "Low Value"
+			)
+		lineageTag: e20a0a8e-14ae-4496-9fbe-7ee18bc9f25f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCustomer = m
+		mode: import
+		source =
+				let
+				    Source = DataCoSupplyChainDataset,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"CustomerCountry", "CustomerFirstName", "CustomerID", "CustomerLastName", "CustomerSegment", "CustomerState", "Customer_ZipCode"}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Removed Other Columns",{"CustomerID", "CustomerCountry", "CustomerFirstName", "CustomerLastName", "CustomerSegment", "CustomerState", "Customer_ZipCode"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Reordered Columns", {"CustomerID"}),
+				    #"Added Custom" = Table.AddColumn(#"Removed Duplicates", "CustomerFullName", each [CustomerFirstName] & " " & [CustomerLastName])
+				in
+				    #"Added Custom"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

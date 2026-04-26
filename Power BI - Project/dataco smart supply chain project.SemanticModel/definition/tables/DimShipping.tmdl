@@ -1,0 +1,33 @@
+table DimShipping
+	lineageTag: c9ef6619-24bf-4fe8-a891-52d0c1cf88ff
+
+	column DeliveryStatus
+		dataType: string
+		lineageTag: 4e753d71-d2af-4df0-84e7-88b9d5bf9bef
+		summarizeBy: none
+		sourceColumn: DeliveryStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShippingMode
+		dataType: string
+		lineageTag: d7eb6c63-af13-4b41-a544-d96eb1552cdc
+		summarizeBy: none
+		sourceColumn: ShippingMode
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimShipping = m
+		mode: import
+		source =
+				let
+				    Source = DataCoSupplyChainDataset,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"DeliveryStatus", "ShippingMode"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns")
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

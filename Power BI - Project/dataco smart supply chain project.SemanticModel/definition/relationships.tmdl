@@ -1,0 +1,25 @@
+relationship 3efa824d-9ef0-4aa9-b7d9-ef7fae80423e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FactOrders.ShippingDate
+	toColumn: LocalDateTable_8a9b1bae-e745-45a5-9ecc-ea050d0c4d40.Date
+
+relationship AutoDetected_9545f60e-5272-4e02-a0b1-2d654e5b390f
+	fromColumn: FactOrders.CustomerID
+	toColumn: DimCustomer.CustomerID
+
+relationship AutoDetected_db256631-f535-4d10-a514-89f7c6b5c6f6
+	fromColumn: FactOrders.DepartmentID
+	toColumn: DimDepartment.DepartmentID
+
+relationship AutoDetected_ea3ef0d2-4673-416d-bc19-6688bf449fd2
+	fromColumn: FactOrders.ProductID
+	toColumn: DimProduct.ProductID
+
+relationship e302e24c-93c7-c48a-dc94-5d8c72b36496
+	fromColumn: FactOrders.Market
+	toColumn: DimMarket.Market
+
+relationship cb9459e7-3ea8-2690-c050-494632008f1f
+	fromColumn: FactOrders.OrderDate
+	toColumn: DimDate.Date
+

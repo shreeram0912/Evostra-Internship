@@ -1,0 +1,250 @@
+table FactOrders
+	lineageTag: 86327be9-c022-4b12-b7e4-59181e038bc3
+
+	column ActualShippingDays
+		dataType: int64
+		formatString: 0
+		lineageTag: 92db5e87-e925-4160-a4a4-6a8407dd3310
+		summarizeBy: sum
+		sourceColumn: ActualShippingDays
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScheduledShippingDays
+		dataType: int64
+		formatString: 0
+		lineageTag: 245dd0d8-1635-48f6-b78e-b9c2a6ece39e
+		summarizeBy: sum
+		sourceColumn: ScheduledShippingDays
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderBenifit
+		dataType: double
+		lineageTag: 8ef90481-1fb3-4b21-a4b8-adc24362db34
+		summarizeBy: sum
+		sourceColumn: OrderBenifit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SalesPerCustomer
+		dataType: double
+		lineageTag: 398fef97-7825-433c-b332-5fe0bcd7c3fd
+		summarizeBy: sum
+		sourceColumn: SalesPerCustomer
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CategoryID
+		dataType: string
+		lineageTag: 3cbed1df-4602-4b06-afdc-188b15db0b70
+		summarizeBy: none
+		sourceColumn: CategoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: int64
+		formatString: 0
+		lineageTag: 8167d869-6df2-497c-8f80-090f19d13750
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DepartmentID
+		dataType: int64
+		formatString: 0
+		lineageTag: b796a450-4e4b-4df4-8b61-3209b13b57a2
+		summarizeBy: none
+		sourceColumn: DepartmentID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Market
+		dataType: string
+		lineageTag: 256aa03a-0403-4042-aea5-f348d018f9ac
+		summarizeBy: none
+		sourceColumn: Market
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 733865e5-3ebf-4e3c-adfc-89f8727b52ce
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderID
+		dataType: int64
+		formatString: 0
+		lineageTag: 578f2008-0214-4687-84a3-25a14eeb43f2
+		summarizeBy: count
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiscountAmount
+		dataType: double
+		lineageTag: c3a5c04a-d25a-4416-9c35-af55ba1c37a9
+		summarizeBy: sum
+		sourceColumn: DiscountAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DiscountRate
+		dataType: double
+		lineageTag: f50e9fa0-0b09-4559-a33f-a81de7ae688e
+		summarizeBy: sum
+		sourceColumn: DiscountRate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderItemID
+		dataType: int64
+		formatString: 0
+		lineageTag: 782551e8-d163-4bc0-afa4-8d5e02b3174d
+		summarizeBy: count
+		sourceColumn: OrderItemID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductUnitPrice
+		dataType: double
+		lineageTag: f5c74715-6794-4981-8c81-bc322bc4fb72
+		summarizeBy: sum
+		sourceColumn: ProductUnitPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProfitRatio
+		dataType: double
+		lineageTag: 723c4887-4efd-402e-a3ba-8fec48bbf29a
+		summarizeBy: sum
+		sourceColumn: ProfitRatio
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: c171106f-2868-4de7-9b7b-46fd11501f78
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesAmount
+		dataType: double
+		lineageTag: 4fb90e48-3898-46c4-8612-67311c4c6523
+		summarizeBy: sum
+		sourceColumn: SalesAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderItemTotal
+		dataType: double
+		lineageTag: 7b790a56-16a2-403f-9514-c06a836b583d
+		summarizeBy: sum
+		sourceColumn: OrderItemTotal
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderProfit
+		dataType: double
+		lineageTag: a2710570-2353-4996-8007-f988a2eaafc8
+		summarizeBy: sum
+		sourceColumn: OrderProfit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProductID
+		dataType: string
+		lineageTag: c57eae34-4631-4ca7-b2dc-14cec01cfdc4
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShippingDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 94694999-a4b7-4ca3-8eb2-574d8b6fd80b
+		summarizeBy: none
+		sourceColumn: ShippingDate
+
+		variation Variation
+			isDefault
+			relationship: 3efa824d-9ef0-4aa9-b7d9-ef7fae80423e
+			defaultHierarchy: LocalDateTable_8a9b1bae-e745-45a5-9ecc-ea050d0c4d40.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShippingMode
+		dataType: string
+		lineageTag: 1d3fc48c-d92c-4f82-85e3-7eac822fe3e8
+		summarizeBy: none
+		sourceColumn: ShippingMode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delay Days' =
+			
+			FactOrders[ActualShippingDays]
+			-
+			FactOrders[ScheduledShippingDays]
+		formatString: 0
+		lineageTag: 07fb77d1-5e3b-4bec-8d9a-cedbd270de80
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Late Delivery Flag' =
+			
+			IF(
+			    FactOrders[ActualShippingDays]
+			        > FactOrders[ScheduledShippingDays],
+			    1,
+			    0
+			)
+		formatString: 0
+		lineageTag: e44106d9-fb7b-4b5a-8311-21f373827769
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactOrders = m
+		mode: import
+		source =
+				let
+				    Source = DataCoSupplyChainDataset,
+				    #"Renamed Columns" = Table.RenameColumns(Source,{{"ProfitPerOrder", "OrderBenifit"}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns",{"ActualShippingDays", "ScheduledShippingDays", "OrderBenifit", "SalesPerCustomer", "CategoryID", "CustomerID", "DepartmentID", "Market", "OrderDate", "OrderID", "DiscountAmount", "DiscountRate", "OrderItemID", "ProductUnitPrice", "ProfitRatio", "Quantity", "SalesAmount", "OrderItemTotal", "OrderProfit", "ProductID", "ShippingDate", "ShippingMode"})
+				in
+				    #"Removed Other Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

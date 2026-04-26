@@ -1,0 +1,69 @@
+table DimProduct
+	lineageTag: 74a2e47f-b5b4-4a6e-b6ff-ebb7d798977c
+
+	column ProductID
+		dataType: string
+		lineageTag: 62882d8f-3450-4ff8-8983-64ea7b3bd3db
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryID
+		dataType: string
+		lineageTag: d1019864-8d90-4392-ad9e-ba372064fe56
+		summarizeBy: none
+		sourceColumn: CategoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryName
+		dataType: string
+		lineageTag: c3251565-7108-4708-ac24-faa5eb150085
+		summarizeBy: none
+		sourceColumn: CategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 82273ce4-5ace-411c-83ff-f3e5198559f7
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductPrice
+		dataType: double
+		lineageTag: 6cdcc837-634f-4959-8768-98e48f502e05
+		summarizeBy: none
+		sourceColumn: ProductPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProductStatus
+		dataType: int64
+		formatString: 0
+		lineageTag: 995dc929-46f6-472b-961f-f2d137c65b0e
+		summarizeBy: none
+		sourceColumn: ProductStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimProduct = m
+		mode: import
+		source =
+				let
+				    Source = DataCoSupplyChainDataset,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"CategoryID", "CategoryName", "ProductID", "ProductName", "ProductPrice", "ProductStatus"}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Removed Other Columns",{"ProductID", "CategoryID", "CategoryName", "ProductName", "ProductPrice", "ProductStatus"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Reordered Columns", {"ProductID"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

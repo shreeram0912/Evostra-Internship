@@ -1,0 +1,163 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 52.368082418911328,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 52.0325714089887,
+            "y": 0
+          },
+          "nodeIndex": "DimCustomer",
+          "nodeLineageTag": "9f513610-361b-49da-b7ca-4ca0a7dc1ec9",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 56,
+            "y": 265.41854696812266
+          },
+          "nodeIndex": "DimDepartment",
+          "nodeLineageTag": "9319b5f4-b1f1-4492-802a-453c6ab9486f",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 599.03257140898882,
+            "y": 248.36859794242952
+          },
+          "nodeIndex": "DimMarket",
+          "nodeLineageTag": "24652cd4-4249-4322-9f99-81656bce8fc6",
+          "size": {
+            "height": 237,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 594.85365778552682,
+            "y": 0
+          },
+          "nodeIndex": "DimProduct",
+          "nodeLineageTag": "74a2e47f-b5b4-4a6e-b6ff-ebb7d798977c",
+          "size": {
+            "height": 240,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 69.032571408988815,
+            "y": 457.36859794242952
+          },
+          "nodeIndex": "DimShipping",
+          "nodeLineageTag": "c9ef6619-24bf-4fe8-a891-52d0c1cf88ff",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 329.42287521198955,
+            "y": 5
+          },
+          "nodeIndex": "FactOrders",
+          "nodeLineageTag": "86327be9-c022-4b12-b7e4-59181e038bc3",
+          "size": {
+            "height": 564,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 596.03257140898859,
+            "y": 496
+          },
+          "nodeIndex": "DimDate",
+          "nodeLineageTag": "93c8b274-3e81-41f1-83a8-8bb98b88284c",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 831.00000000000011,
+            "y": 296
+          },
+          "nodeIndex": "Measures (1)",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1062.9674285910114,
+            "y": 296
+          },
+          "nodeIndex": "Risk",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1294.9348571820228,
+            "y": 296
+          },
+          "nodeIndex": "Segmentation",
+          "nodeLineageTag": "9ec0eef0-5da7-4620-b619-61beea66f94c",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1526.9022857730342,
+            "y": 296
+          },
+          "nodeIndex": "Metric Selector",
+          "nodeLineageTag": "dab7d3c2-82d8-41d1-83fc-38440a319754",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 82.49299719887955,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

@@ -1,0 +1,49 @@
+table Segmentation
+	lineageTag: 9ec0eef0-5da7-4620-b619-61beea66f94c
+
+	measure 'Customer Sales' = CALCULATE([Total Sales],ALLEXCEPT(DimCustomer,DimCustomer[CustomerID]))
+		lineageTag: 45ffc9ac-6055-48f8-a43b-b28fda14f582
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Customer Segment Tier' =
+			
+			SWITCH(
+			    TRUE(),
+			    [Customer Rank] <= 10, "VIP Customers",
+			    [Customer Rank] <= 50, "High Value",
+			    [Customer Rank] <= 150, "Medium Value",
+			    "Low Value"
+			)
+		lineageTag: fd494abb-4802-40e4-a699-3915674e9a39
+
+	measure 'Product Segment' = SWITCH(TRUE(),[Total Profit]>1000,"High Performer",[Total Profit]>0,"Moderate","Loss Maker")
+		lineageTag: 300f66ef-cc8b-4700-9621-db7d5fbe3126
+
+	measure 'Customer Rank' =
+			
+			RANKX(
+			    ALL(DimCustomer),
+			    [Customer Sales],
+			    ,
+			    DESC
+			)
+		formatString: 0
+		lineageTag: 906c1bad-f30d-4cb7-abb6-f30d8df5088f
+
+	measure 'Total Customers' = DISTINCTCOUNT(DimCustomer[CustomerID])
+		formatString: 0
+		lineageTag: 117a55c8-a0aa-4e1b-895b-b302c8210949
+
+	partition Segmentation = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

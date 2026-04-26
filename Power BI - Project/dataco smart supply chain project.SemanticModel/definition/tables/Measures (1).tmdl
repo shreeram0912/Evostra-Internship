@@ -1,0 +1,140 @@
+table 'Measures (1)'
+	lineageTag: 196e2540-fb09-4608-9bb7-42d35f4797aa
+
+	measure 'Total Orders' = DISTINCTCOUNT(FactOrders[OrderID])
+		formatString: 0
+		lineageTag: 34f1d9f3-3978-4202-a6ab-0779f6019678
+
+	measure 'Total Profit' = SUM(FactOrders[OrderProfit])
+		lineageTag: 5aa319f3-6ced-41ea-b4b1-f3a700e67538
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Sales' = SUM(FactOrders[SalesAmount])
+		lineageTag: 1550baac-4b3f-43cb-9628-5b4bc440963a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Profit Margin %' = DIVIDE([Total Profit],[Total Sales])
+		lineageTag: fadffe12-8f4d-49a7-9970-9305f4d5536b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Shipping Days' = AVERAGE(FactOrders[ActualShippingDays])
+		lineageTag: 51c95685-2bd1-4d49-a2cb-38d9058b9ea7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales YTD' = ```
+			TOTALYTD([Total Sales],DimDate[Date]) 
+			```
+		lineageTag: a47f2b4f-69bf-4be3-be3c-f8e8f6dd5eff
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Profit YTD' = TOTALYTD([Total Profit],DimDate[Date])
+		lineageTag: 99309e96-b37f-447d-ab74-482f4a7ec2ea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales QTD' = TOTALQTD([Total Sales],DimDate[Date])
+		lineageTag: e17c0ce9-0d4c-4c1b-9a58-bb6782ff2740
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales PY' =
+			
+			CALCULATE([Total Sales],SAMEPERIODLASTYEAR(DimDate[Date]))
+		lineageTag: 51727c42-f880-4f28-b58b-09db97efe991
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YoY Growth %' = DIVIDE([Total Sales] - [Sales PY],[Sales PY])
+		lineageTag: 4a9a02db-2889-4c44-8ed5-65ffde75ad6c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rolling 30D Sales' = CALCULATE([Total Sales],DATESINPERIOD(DimDate[Date],MAX(DimDate[Date]),-30,DAY))
+		lineageTag: 9da9647f-4e5f-4a98-b799-54d4aea178b5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rolling 30D Avg' = DIVIDE([Rolling 30D Sales],30)
+		lineageTag: 26becc0a-d8ca-48f1-b941-d4b6e7830841
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rolling 90D Sales' =
+			DIVIDE(
+			    CALCULATE(
+			        [Total Sales],
+			        DATESINPERIOD(
+			            DimDate[Date],
+			            MAX(DimDate[Date]),
+			            -90,
+			            DAY
+			        )
+			    ),
+			    90
+			)
+		lineageTag: 35be36ea-1d75-4c61-8af7-05695727f2ca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Quantity' = SUM(FactOrders[OrderItemTotal])
+		lineageTag: c77969cf-5406-474b-8ace-6bdc6fe19d13
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Order Value' = DIVIDE([Total Sales], [Total Orders])
+		lineageTag: 0dfdd561-95a1-4450-aa00-6b789d41d9ca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Orders YTD' = TOTALYTD([Total Orders],DimDate[Date])
+		formatString: 0
+		lineageTag: db3d2973-1428-45f8-934a-5c54d3660efc
+
+	measure 'Rolling 90D Avg' =
+			
+			DIVIDE([Rolling 90D Sales], 90)
+		lineageTag: 240a0a87-dafa-4cce-a6fb-f57553c3180b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'KPI Status' =
+			
+			SWITCH(
+			    TRUE(),
+			    [YoY Growth %] > 0.1, "Strong Growth",
+			    [YoY Growth %] > 0, "Stable",
+			    "Declining"
+			)
+		lineageTag: 3f497939-830c-428c-9e07-e2af3094f6f8
+
+	measure 'KPI Color' =
+			
+			SWITCH(
+			    [KPI Status],
+			    "Strong Growth", "#2ECC71",
+			    "Stable", "#F1C40F",
+			    "#E74C3C"
+			)
+		lineageTag: 5574d9bb-0efb-4966-a114-c8cde58876f9
+
+	measure Measure = [Profit Margin %] = DIVIDE(SUM(FactOrders[OrderProfit]),SUM(FactOrders[SalesAmount]),0)
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 41fd7150-0a44-43f6-beae-5005b2e93c17
+
+	partition 'Measures (1)' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

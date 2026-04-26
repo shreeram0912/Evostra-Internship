@@ -1,0 +1,49 @@
+table 'Metric Selector'
+	lineageTag: dab7d3c2-82d8-41d1-83fc-38440a319754
+
+	measure 'Selected Metric' =
+			
+			SWITCH(
+			    SELECTEDVALUE('Metric Selector'[Metric]),
+			    "Sales", [Total Sales],
+			    "Profit", [Total Profit],
+			    "Orders", [Total Orders],
+			    "Profit Margin", [Profit Margin %]
+			)
+		lineageTag: 20be61f4-0830-4c75-b4ad-884bb13ebf56
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Dynamic Title' =
+			
+			"Analysis by " &
+			SELECTEDVALUE('Metric Selector'[Metric], "Sales")
+		lineageTag: 6ea19a2d-df67-4e85-a1ca-5887fcf86fd1
+
+	measure 'Customer Page Title' =
+			
+			"Customer Deep Dive — " &
+			SELECTEDVALUE('Metric Selector'[Metric],"Sales")
+		lineageTag: e4585101-7d4a-43b5-bd21-2cc873094c36
+
+	column Metric
+		dataType: string
+		lineageTag: 7d694e17-4778-4146-bf02-83b8df6e6cb3
+		summarizeBy: none
+		sourceColumn: Metric
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Metric Selector' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCk7MSS1WitWJVgooyk/LLAEz/YtSUouQRRV8E4vSM/OUYmMB", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Metric = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Metric", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

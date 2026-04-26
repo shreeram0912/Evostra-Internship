@@ -1,0 +1,54 @@
+table DimDepartment
+	lineageTag: 9319b5f4-b1f1-4492-802a-453c6ab9486f
+
+	column DepartmentID
+		dataType: int64
+		formatString: 0
+		lineageTag: 6333f0b4-dcda-40e2-8715-e0b7b1b52cd8
+		summarizeBy: none
+		sourceColumn: DepartmentID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DepartmentName
+		dataType: string
+		lineageTag: a48676b8-e967-4c77-82a7-0eb1bb7848b4
+		summarizeBy: none
+		sourceColumn: DepartmentName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Latitude
+		dataType: double
+		lineageTag: 34ead2e8-6536-46a2-b821-ad227403e427
+		summarizeBy: none
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Longitude
+		dataType: double
+		lineageTag: 1fff40a1-435c-40ce-b030-fe843efb2ffc
+		summarizeBy: none
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DimDepartment = m
+		mode: import
+		source =
+				let
+				    Source = DataCoSupplyChainDataset,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"DepartmentID", "DepartmentName", "Latitude", "Longitude"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns", {"DepartmentID"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

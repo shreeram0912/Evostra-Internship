@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "dataco smart supply chain project"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d4f941f1-dcf8-453e-bd72-cf1219a2a9d8"
+  }
+}

@@ -1,0 +1,53 @@
+table Risk
+	lineageTag: 15ff8734-508a-4356-97c9-541fb0752eb0
+
+	measure 'Shipping Delay' = AVERAGE(FactOrders[ActualShippingDays]) - AVERAGE(FactOrders[ScheduledShippingDays])
+		lineageTag: c112fd9b-67fc-4b06-9400-d11bdfa85d5f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Late Deliveries' =
+			
+			CALCULATE(
+			    [Total Orders],
+			    FactOrders[Late Delivery Flag] = 1
+			)
+		formatString: 0
+		lineageTag: 993ef10e-18fc-4d21-909f-208f56f2c7f4
+
+	measure 'Late Delivery %' =
+			
+			DIVIDE([Late Deliveries], [Total Orders])
+		lineageTag: 83238b62-c251-4394-aeaf-b0d5f357f80e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Risk Score' =
+			
+			([Late Delivery %] * 0.6)
+			+
+			(ABS([Profit Margin %]) * 0.4)
+		lineageTag: ba0afc2d-c4df-48bf-b1d0-907deccf386e
+
+	measure 'Risk Category' =
+			
+			SWITCH(
+			    TRUE(),
+			    [Risk Score] >= 0.6, "High Risk",
+			    [Risk Score] >= 0.3, "Medium Risk",
+			    "Low Risk"
+			)
+		lineageTag: c00246c4-da5b-470c-bca0-cd4cac7d9003
+
+	partition Risk = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

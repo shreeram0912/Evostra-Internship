@@ -1,0 +1,30 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["DataCoSupplyChainDataset","DimCustomer","DimProduct","DimMarket","DimDepartment","DimShipping","FactOrders","Measures (1)","Risk","Segmentation","Metric Selector"]
+
+annotation PBI_ProTooling = ["TMDLView_Desktop","DevMode"]
+
+ref table DateTableTemplate_e8a263c6-24ab-44cf-877f-b3953ce79a60
+ref table DimCustomer
+ref table DimProduct
+ref table DimMarket
+ref table DimDepartment
+ref table DimShipping
+ref table FactOrders
+ref table LocalDateTable_8a9b1bae-e745-45a5-9ecc-ea050d0c4d40
+ref table DimDate
+ref table 'Measures (1)'
+ref table Risk
+ref table Segmentation
+ref table 'Metric Selector'
+
+ref cultureInfo en-US
+

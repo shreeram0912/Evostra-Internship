@@ -1,0 +1,57 @@
+table DimMarket
+	lineageTag: 24652cd4-4249-4322-9f99-81656bce8fc6
+
+	column Market
+		dataType: string
+		lineageTag: f48cd0a4-b4e3-4389-a7ab-614210d366f4
+		summarizeBy: none
+		sourceColumn: Market
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderCity
+		dataType: string
+		lineageTag: bf673ace-0954-4968-8839-d1bb152e2ee9
+		summarizeBy: none
+		sourceColumn: OrderCity
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderCountry
+		dataType: string
+		lineageTag: 535d140c-a512-4c33-ab07-9753577d4bb7
+		summarizeBy: none
+		sourceColumn: OrderCountry
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderRegion
+		dataType: string
+		lineageTag: decf73db-ca86-493b-a390-97e28ac739ad
+		summarizeBy: none
+		sourceColumn: OrderRegion
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderState
+		dataType: string
+		lineageTag: bfaf3253-c636-4eff-b978-dfd82d1d2a3a
+		summarizeBy: none
+		sourceColumn: OrderState
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimMarket = m
+		mode: import
+		source =
+				let
+				    Source = DataCoSupplyChainDataset,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"Market", "OrderCity", "OrderCountry", "OrderRegion", "OrderState"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns", {"Market"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

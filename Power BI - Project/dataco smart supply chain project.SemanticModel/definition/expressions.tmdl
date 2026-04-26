@@ -1,0 +1,29 @@
+expression DataCoSupplyChainDataset =
+		let
+		    Source = Csv.Document(File.Contents("D:\ShreeramPrajapati\Evostra\DataCoSupplyChainDataset.csv"),[Delimiter=",", Columns=53, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Type", type text}, {"Days for shipping (real)", Int64.Type}, {"Days for shipment (scheduled)", Int64.Type}, {"Benefit per order", type number}, {"Sales per customer", type number}, {"Delivery Status", type text}, {"Late_delivery_risk", Int64.Type}, {"Category Id", Int64.Type}, {"Category Name", type text}, {"Customer City", type text}, {"Customer Country", type text}, {"Customer Email", type text}, {"Customer Fname", type text}, {"Customer Id", Int64.Type}, {"Customer Lname", type text}, {"Customer Password", type text}, {"Customer Segment", type text}, {"Customer State", type text}, {"Customer Street", type text}, {"Customer Zipcode", Int64.Type}, {"Department Id", Int64.Type}, {"Department Name", type text}, {"Latitude", type number}, {"Longitude", type number}, {"Market", type text}, {"Order City", type text}, {"Order Country", type text}, {"Order Customer Id", Int64.Type}, {"order date (DateOrders)", type datetime}, {"Order Id", Int64.Type}, {"Order Item Cardprod Id", Int64.Type}, {"Order Item Discount", type number}, {"Order Item Discount Rate", type number}, {"Order Item Id", Int64.Type}, {"Order Item Product Price", type number}, {"Order Item Profit Ratio", type number}, {"Order Item Quantity", Int64.Type}, {"Sales", type number}, {"Order Item Total", type number}, {"Order Profit Per Order", type number}, {"Order Region", type text}, {"Order State", type text}, {"Order Status", type text}, {"Order Zipcode", Int64.Type}, {"Product Card Id", Int64.Type}, {"Product Category Id", Int64.Type}, {"Product Description", type text}, {"Product Image", type text}, {"Product Name", type text}, {"Product Price", type number}, {"Product Status", Int64.Type}, {"shipping date (DateOrders)", type datetime}, {"Shipping Mode", type text}}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Type", "OrderType"}, {"Days for shipping (real)", "ActualShippingDays"}, {"Days for shipment (scheduled)", "ScheduledShippingDays"}, {"Benefit per order", "ProfitPerOrder"}, {"Sales per customer", "SalesPerCustomer"}, {"Delivery Status", "DeliveryStatus"}, {"Late_delivery_risk", "LateDeliveryRisk"}, {"Category Id", "CategoryID"}, {"Category Name", "CategoryName"}, {"Customer City", "CustomerCity"}, {"Customer Country", "CustomerCountry"}, {"Customer Email", "CustomerEmail"}, {"Customer Fname", "CustomerFirstName"}, {"Customer Id", "CustomerID"}, {"Customer Lname", "CustomerLastName"}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Renamed Columns",{"Customer Password"}),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Removed Columns",{{"Customer Segment", "CustomerSegment"}, {"Customer State", "CustomerState"}, {"Customer Street", "CustomerStreet"}, {"Customer Zipcode", "Customer_ZipCode"}, {"Department Id", "DepartmentID"}, {"Department Name", "DepartmentName"}, {"Order City", "OrderCity"}, {"Order Country", "OrderCountry"}, {"Order Customer Id", "OrderCustomerID"}, {"order date (DateOrders)", "OrderDate"}, {"Order Id", "OrderID"}, {"Order Item Cardprod Id", "ProductID_OrderItem"}, {"Order Item Discount", "DiscountAmount"}, {"Order Item Discount Rate", "DiscountRate"}, {"Order Item Id", "OrderItemID"}, {"Order Item Product Price", "ProductUnitPrice"}, {"Order Item Profit Ratio", "ProfitRatio"}, {"Order Item Quantity", "Quantity"}, {"Sales", "SalesAmount"}, {"Order Item Total", "OrderItemTotal"}, {"Order Profit Per Order", "OrderProfit"}, {"Order Region", "OrderRegion"}, {"Order State", "OrderState"}, {"Order Status", "OrderStatus"}, {"Order Zipcode", "OrderZipCode"}, {"Product Card Id", "ProductID"}, {"Product Category Id", "ProductCategoryID"}, {"Product Description", "ProductDescription"}, {"Product Image", "ProductImageURL"}, {"Product Name", "ProductName"}, {"Product Price", "ProductPrice"}, {"Product Status", "ProductStatus"}, {"shipping date (DateOrders)", "ShippingDate"}, {"Shipping Mode", "ShippingMode"}}),
+		    #"Removed Columns1" = Table.RemoveColumns(#"Renamed Columns1",{"ProductDescription", "OrderZipCode"}),
+		    #"Replaced Value" = Table.ReplaceValue(#"Removed Columns1"," ","Unknown",Replacer.ReplaceText,{"CustomerLastName"}),
+		    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","","Unknown",Replacer.ReplaceValue,{"CustomerLastName"}),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Replaced Value1",{{"Customer_ZipCode", type text}}),
+		    #"Replaced Value2" = Table.ReplaceValue(#"Changed Type1"," ","Unknown",Replacer.ReplaceText,{"Customer_ZipCode"}),
+		    #"Capitalized Each Word" = Table.TransformColumns(#"Replaced Value2",{{"OrderType", Text.Proper, type text}}),
+		    #"Changed Type2" = Table.TransformColumnTypes(#"Capitalized Each Word",{{"CategoryID", type text}}),
+		    #"Removed Columns2" = Table.RemoveColumns(#"Changed Type2",{"CustomerEmail"}),
+		    #"Capitalized Each Word1" = Table.TransformColumns(#"Removed Columns2",{{"OrderStatus", Text.Proper, type text}}),
+		    #"Changed Type3" = Table.TransformColumnTypes(#"Capitalized Each Word1",{{"ProductID", type text}, {"ProductCategoryID", type text}}),
+		    #"Replaced Value3" = Table.ReplaceValue(#"Changed Type3"," ","Unknown",Replacer.ReplaceText,{"Customer_ZipCode"}),
+		    #"Replaced Value4" = Table.ReplaceValue(#"Replaced Value3",null,"Unknown",Replacer.ReplaceValue,{"Customer_ZipCode"}),
+		    #"Removed Columns3" = Table.RemoveColumns(#"Replaced Value4",{"ProductImageURL"})
+		in
+		    #"Removed Columns3"
+	lineageTag: 04a510cd-2d42-4a61-94be-dab0783fa729
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
